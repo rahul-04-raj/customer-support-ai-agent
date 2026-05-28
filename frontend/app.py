@@ -2,8 +2,15 @@ import streamlit as st
 import requests
 import os
 
-# Fetch backend URL from environment variable, fallback to localhost for development
-BASE_API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
+# Fetch backend URL from Streamlit secrets (Cloud) or Environment (Local)
+try:
+    BASE_API_URL = st.secrets["API_URL"]
+except Exception:
+    BASE_API_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
+
+# Clean the URL just in case there are accidental spaces or line breaks
+BASE_API_URL = BASE_API_URL.strip().strip("/")
+
 API_URL = f"{BASE_API_URL}/api/chat"
 ESCALATE_URL = f"{BASE_API_URL}/api/escalate"
 
