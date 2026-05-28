@@ -172,7 +172,10 @@ if st.session_state.show_escalation_form and not st.session_state.escalation_sen
 # Chat input
 if prompt := st.chat_input("e.g. How much does a custom website cost?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
-    st.session_state.escalation_sent = False  # Reset on new message
+    
+    # Reset escalation state on new message so the form disappears
+    st.session_state.escalation_sent = False
+    st.session_state.show_escalation_form = False
 
     with st.chat_message("user"):
         st.markdown(prompt)
