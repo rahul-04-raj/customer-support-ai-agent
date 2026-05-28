@@ -1,7 +1,7 @@
 # Recommendation Report: Customer Support AI Agent
 
 ## 1. Recommended Architecture
-To move from our local prototype to a robust, production-grade system, I recommend the following architecture:
+To move from my local prototype to a robust, production-grade system, I recommend the following architecture:
 
 ```mermaid
 graph TD
@@ -20,14 +20,14 @@ graph TD
 ## 2. Tool Selection Reasoning
 - **FastAPI**: Ensures high concurrency and asynchronous performance, crucial for I/O-bound LLM API calls.
 - **Groq API**: Offers unparalleled latency for the initial classification step, ensuring the user doesn't experience "thinking" delays just to be routed correctly.
-- **Gemini API**: Highly capable of synthesizing context retrieved from the RAG system and generating empathetic, accurate support responses at a very accessible price point.
-- **ChromaDB (Prototype) -> Pinecone (Production)**: Chroma is perfect for local prototyping as it incurs no costs and requires no setup. For production, Pinecone offers fully-managed scalability and ultra-low latency across distributed clusters.
+- **Gemini API**: Highly capable of synthesizing context retrieved from the RAG system and generating empathetic, accurate support responses at a very accessible price point. I also rely on their Embedding API to save massive amounts of compute memory.
+- **FAISS (Prototype) -> Pinecone (Production)**: FAISS is perfect for local prototyping and free-tier cloud deployment as it runs completely in-memory. For enterprise production, Pinecone offers fully-managed scalability and ultra-low latency across distributed clusters.
 
 ## 3. Estimated Infrastructure Costs (Production)
 Assuming 10,000 support tickets per month:
 - **Vector DB (Pinecone Standard)**: ~$70/month.
 - **Classification (Groq Llama 3 8B)**: The free tier easily covers 10k short classification queries.
-- **Generation (Gemini 1.5 Pro)**: ~$15/month (assuming ~1,000 tokens processed per interaction).
+- **Generation & Embeddings (Gemini 1.5 Pro)**: ~$15/month (assuming ~1,000 tokens processed per interaction).
 - **Compute (AWS ECS or Google Cloud Run)**: ~$20-40/month.
 - **Total Expected Monthly Cost**: ~$100 - $125.
 

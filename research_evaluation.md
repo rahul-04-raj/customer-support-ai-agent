@@ -6,7 +6,7 @@ This document compares various AI tools, platforms, and models for building a Cu
 
 ## 1. Large Language Models (LLMs)
 
-We evaluated models based on their ability to perform intent classification, context retrieval, and response generation.
+I evaluated models based on their ability to perform intent classification, context retrieval, and response generation.
 
 | Feature | Groq (Llama 3 70B/8B) | Google Gemini (1.5 Flash/Pro) | Local Models (Ollama - Llama 3/Mistral) |
 | :--- | :--- | :--- | :--- |
@@ -17,7 +17,7 @@ We evaluated models based on their ability to perform intent classification, con
 | **Limitations** | Context window limited (8k). | Stricter safety filters sometimes block benign prompts. | Slow generation on CPU/weak GPU. |
 | **Best Use Case** | Real-time agents, rapid multi-step reasoning. | Analyzing massive documents, complex generation. | Privacy-critical enterprise applications. |
 
-**Recommendation:** We will use **Groq (Llama 3)** for ultra-fast intent classification and **Google Gemini 1.5** for drafting complex final responses. This multi-model approach ensures speed where needed and high intelligence where required.
+**Recommendation:** I decided to use **Groq (Llama 3.3 70B)** for ultra-fast reasoning and intent classification. I also heavily relied on **Google's Gemini API for embeddings** (`gemini-embedding-001`) because running local embedding models (like PyTorch) consumes 500MB+ of RAM, which immediately crashes free-tier cloud environments.
 
 ---
 
@@ -33,20 +33,20 @@ Building the logic of the AI agent requires a framework to handle tool calling, 
 | **Limitations** | Abstractions can become convoluted and hard to debug. | Less flexible than raw LangChain for granular control. | Complex logic can be hard to manage visually. |
 | **Best Use Case** | Complex RAG pipelines and custom logic. | Multi-agent systems (e.g., researcher + writer + reviewer). | Zapier alternatives, internal automation. |
 
-**Recommendation:** We will use **LangChain** (specifically LangGraph/LCEL) as it provides the most flexibility for a custom RAG workflow and is highly sought after for AI Engineering roles.
+**Recommendation:** I chose to use **LangChain** (specifically LCEL) as it provides the most flexibility for a custom RAG workflow and is highly sought after for AI Engineering roles.
 
 ---
 
 ## 3. Vector Databases
 
-To build the RAG system, we need a vector database to store and retrieve embedded knowledge (e.g., company policies).
+To build the RAG system, I needed a vector database to store and retrieve embedded knowledge (e.g., company policies).
 
-| Feature | ChromaDB | Pinecone | Weaviate |
+| Feature | FAISS | Pinecone | ChromaDB |
 | :--- | :--- | :--- | :--- |
-| **Capabilities** | In-memory/local SQLite storage; perfect for Python prototypes. | Managed cloud vector database; highly scalable. | Open-source vector search engine; hybrid search. |
-| **Pricing** | Free (Open-source). | Free tier (1 index); Paid for scale. | Open-source (Free self-hosted) / Paid Cloud. |
-| **Ease of Integration** | Extremely easy (`pip install chromadb`); works locally. | Easy, but requires cloud API key. | Requires Docker setup for local use. |
-| **Limitations** | Not ideal for massive, distributed production scale. | Dependent on cloud; latency. | Steeper learning curve. |
-| **Best Use Case** | POCs, local testing, smaller-scale applications. | Production-grade RAG, enterprise search. | Hybrid search (keyword + vector). |
+| **Capabilities** | Raw, blazing-fast in-memory similarity search library by Facebook. | Managed cloud vector database; highly scalable. | In-memory/local SQLite storage; user-friendly API. |
+| **Pricing** | Free (Open-source). | Free tier (1 index); Paid for scale. | Free (Open-source). |
+| **Ease of Integration** | Requires manual numpy array management, but extremely lightweight. | Easy, but requires cloud API key. | Extremely easy (`pip install chromadb`); works locally. |
+| **Limitations** | No built-in document management (you must track text chunks yourself). | Dependent on cloud; latency. | Has heavily bloated dependencies that break cloud deploys. |
+| **Best Use Case** | Highly optimized, memory-constrained environments. | Production-grade RAG, enterprise search. | Quick local POCs. |
 
-**Recommendation:** We will use **ChromaDB**. It runs entirely locally, requires no API keys, and pairs perfectly with free, open-source embedding models (like `sentence-transformers`), keeping our prototype 100% free while demonstrating a complete RAG architecture.
+**Recommendation:** I ultimately chose **FAISS**. While ChromaDB is easier to use, its SQLite dependencies can be a nightmare in containerized cloud environments. FAISS operates as a pure mathematical matrix index in RAM, making it infinitely faster, cleaner, and perfect for a streamlined cloud microservice.
