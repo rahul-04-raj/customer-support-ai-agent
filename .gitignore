@@ -1,0 +1,26 @@
+# Python Virtual Environment
+customerenv/
+venv/
+env/
+.venv/
+
+# Secrets
+.env
+.DS_Store
+
+# Cache and Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# FAISS and local db (optional, we build it on the fly anyway, but good to ignore if saved to disk)
+*.index
