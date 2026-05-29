@@ -1,4 +1,4 @@
-# TechGadgets Customer Support AI Agent
+# Customer Support AI Agent
 
 This repository contains the prototype for a Customer Support Automation Agent built for my AI Researcher evaluation. 
 
